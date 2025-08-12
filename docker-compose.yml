@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: tx_local
+      POSTGRES_PASSWORD: tx_p4sswd
+    ports:
+      - "5442:5432"
+    volumes:
+      - ./tmp/postgres:/var/lib/postgresql/data
+      - ./etc/postgres/init.d:/docker-entrypoint-initdb.d

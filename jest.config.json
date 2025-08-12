@@ -1,0 +1,23 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "roots": [
+    "src",
+    "test"
+  ],
+  "testEnvironment": "node",
+  "testRegex": ".*\\.spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "transformIgnorePatterns": [
+    "/node_modules/"
+  ],
+  "collectCoverageFrom": [
+    "**/*.(t|j)s"
+  ],
+  "moduleNameMapper": {
+    "^@tx/src/(.*)$": "<rootDir>/src/$1",
+    "^@tx/test/(.*)$": "<rootDir>/test/$1"
+  },
+  "testTimeout": 600000
+}
