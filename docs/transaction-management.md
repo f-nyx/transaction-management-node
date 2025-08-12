@@ -4,6 +4,12 @@ title: Transaction Management en NodeJS
 date: Agosto 13, 2025
 ---
 
+# Concurrencia
+
+![](image/concurrencia.png)
+
+__Múltiples tareas compiten por el acceso al mismo recurso__
+
 # ¿Qué son las transacciones?
 
 ![](image/atomico.png)
@@ -21,7 +27,7 @@ date: Agosto 13, 2025
 # Cómo lo hacen
 
 * Proveen distintos niveles de aislamiento
-* Guardan un log de transacciones
+* Permiten cancelar una operación en progreso sin side effects
 * Bloquean registros modificados
 
 ![](image/transaction-states.png)
@@ -29,8 +35,8 @@ date: Agosto 13, 2025
 # Bloqueo de registros
 
 <div style="float: left; width: 70%;">
-* __Bloqueo pesimista__: fuerza a que otras transacciones que quieran acceder a un registro tengan que esperar.
-* __Bloqueo optimista__: permite que otras transacciones ignoren los registros bloqueados.
+* __Bloqueo pesimista__: fuerza a que otras transacciones que quieran acceder a un registro tengan que esperar
+* __Bloqueo optimista__: permite que otras transacciones ignoren los registros bloqueados
 </div>
 
 <img src="image/locking.png" style="float: right; margin-left: 1em; max-width: 30%">

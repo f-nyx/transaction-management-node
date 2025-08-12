@@ -1,10 +1,10 @@
 {
   "name": "transaction-management",
   "version": "1.0.0",
-  "description": "Example app to show how different type of transactions work.",
+  "description": "Example app to show how transactions work.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest --config jest.config.json"
+    "test": "jest --runInBand --config jest.config.json"
   },
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/f-nyx/transaction-management/issues"
   },
-  "homepage": "https://github.com/f-nyx/transaction-management#readme",
+  "homepage": "https://f-nyx.github.io/transaction-management-node",
   "dependencies": {
     "dotenv": "^17.2.1",
     "pg": "^8.16.3",

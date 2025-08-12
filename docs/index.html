@@ -70,6 +70,12 @@
   <p class="date">Agosto 13, 2025</p>
 </section>
 
+<section id="concurrencia" class="slide level1">
+<h1>Concurrencia</h1>
+<p><img data-src="image/concurrencia.png" /></p>
+<p><strong>Múltiples tareas compiten por el acceso al mismo
+recurso</strong></p>
+</section>
 <section id="qué-son-las-transacciones" class="slide level1">
 <h1>¿Qué son las transacciones?</h1>
 <p><img data-src="image/atomico.png" /></p>
@@ -88,7 +94,7 @@
 <h1>Cómo lo hacen</h1>
 <ul>
 <li>Proveen distintos niveles de aislamiento</li>
-<li>Guardan un log de transacciones</li>
+<li>Permiten cancelar una operación en progreso sin side effects</li>
 <li>Bloquean registros modificados</li>
 </ul>
 <p><img data-src="image/transaction-states.png" /></p>
@@ -98,9 +104,9 @@
 <div style="float: left; width: 70%;">
 <ul>
 <li><strong>Bloqueo pesimista</strong>: fuerza a que otras transacciones
-que quieran acceder a un registro tengan que esperar.</li>
+que quieran acceder a un registro tengan que esperar</li>
 <li><strong>Bloqueo optimista</strong>: permite que otras transacciones
-ignoren los registros bloqueados.</li>
+ignoren los registros bloqueados</li>
 </ul>
 </div>
 <p><img src="image/locking.png" style="float: right; margin-left: 1em; max-width: 30%"></p>
