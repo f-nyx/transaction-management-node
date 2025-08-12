@@ -16,6 +16,18 @@ __Múltiples tareas compiten por el acceso al mismo recurso__
 
 **Unidades atómicas de trabajo**
 
+# Dónde y para qué se usan
+
+<div style="float: left; width: 50%;">
+* Aplicaciones bancarias
+* Sistemas de control de stock
+* Sistemas de archivos: journaling
+* IoT: sistemas de iluminación
+* __??????__
+</div>
+
+<img src="image/mr_x.png" style="float: right; margin-left: 1em; max-width: 50%">
+
 # Qué hacen
 
 * Garantizan consistencia e integridad de datos
