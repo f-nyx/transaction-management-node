@@ -4,16 +4,27 @@ import { PoolClient } from 'pg'
 const FIND_BY_ID = 'SELECT * FROM tasks WHERE id=$1'
 const FIND_BY_NAME = 'SELECT * FROM tasks WHERE name=$1'
 const FIND_BY_NAME_AND_LOCK = 'SELECT * FROM tasks WHERE name=$1 FOR UPDATE'
-const FIND_BY_STATE_AND_LOCK = 'SELECT * FROM tasks WHERE state=$1 FOR UPDATE'
 const CREATE_TASK = `
-    INSERT INTO tasks (id, name, state, created_at, updated_at) 
-    VALUES ($1, $2, $3, $4, $5)
+    INSERT INTO tasks (id, name, state, data, created_at, updated_at) 
+    VALUES ($1, $2, $3, $4, $5, $6)
 `
 const UPDATE_TASK = `
     UPDATE tasks SET name=$2, state=$3, updated_at=$4
     WHERE id=$1
 `
 const DELETE_ALL = 'DELETE FROM tasks'
+const LOCK_BY_NAME = `
+    UPDATE tasks SET is_locked=true
+    WHERE name=$1
+`
+const UNLOCK_BY_NAME = `
+    UPDATE tasks SET is_locked=false
+    WHERE name=$1
+`
+const IS_LOCKED = `
+    SELECT is_locked FROM tasks
+    WHERE name=$1
+`
 
 export class TaskRepository {
   constructor(
@@ -36,9 +47,14 @@ export class TaskRepository {
     return result.rows.length ? Task.restore(result.rows[0]) : undefined
   }
 
-  async findByStateAndLock(state: string): Promise<Task[]> {
-    const result = await this.client.query(FIND_BY_STATE_AND_LOCK, [state])
-    return result.rows.map(Task.restore)
+  async lockByName(name: string): Promise<Task | undefined> {
+    await this.client.query(LOCK_BY_NAME, [name])
+    return await this.findByName(name)
+  }
+
+  async unlockByName(name: string): Promise<Task | undefined> {
+    await this.client.query(UNLOCK_BY_NAME, [name])
+    return await this.findByName(name)
   }
 
   async create(task: Task): Promise<Task> {
@@ -46,6 +62,7 @@ export class TaskRepository {
       task.id,
       task.name,
       task.state,
+      task.data,
       task.createdAt,
       task.updatedAt,
     ])

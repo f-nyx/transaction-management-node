@@ -11,7 +11,7 @@ describe('pessimistic lock', () => {
   test('blocking and order', async () => {
     const monitor = new AsyncMonitor()
 
-    const newTask = Task.create('promos')
+    const newTask = Task.create('promos', 'foo')
     await transactionManager.runInTransaction(async (client: PoolClient) => {
       const repository = new TaskRepository(client)
       await repository.create(newTask)
@@ -82,48 +82,39 @@ describe('pessimistic lock', () => {
     monitor.disconnect()
   })
 
-  test.each([100, 1000, 10000, 20000, 30000])('blocking and performance', async (taskCount) => {
+  test.each([50, 100, 200])('blocking and performance', async (taskCount) => {
     const monitor = new AsyncMonitor()
-
-    const tasks: Task[] = []
-    for (let i = 0; i < taskCount; i++) {
-      if (i % 2 === 0) {
-        tasks.push(Task.create(`promos-${i}`))
-      } else {
-        tasks.push(Task.create(`promos-${i}`).start())
-      }
-    }
 
     await transactionManager.runInTransaction(async (client: PoolClient) => {
       const repository = new TaskRepository(client)
-      await Promise.all(tasks.map(async (task) => await repository.create(task)))
+      await repository.create(Task.create('rewards', 'lorem ipsum '.repeat(1024*1024)))
     })
 
     const start = performance.eventLoopUtilization()
-    const tasksPending = tasks.filter((task) => task.state === 'pending')
 
-    await Promise.all([
-      monitor.measure('Transaction-0', async () => {
-        await transactionManager.runInTransaction(async (client: PoolClient) => {
-          const repository = new TaskRepository(client)
-          const tasks = await repository.findByStateAndLock('pending')
-          await Promise.all(tasks.map(async (task) => await repository.update(task.start())))
-          await monitor.waitFor(2000)
-        })
-      }),
-      ...tasksPending.map(async (taskPending, index) => {
-        await monitor.measure(`Transaction-${index + 1}`, async () => {
-          await transactionManager.runInTransaction(async (client) => {
+    const promises: Promise<void>[] = []
+    for (let i = 0; i < taskCount; ++i) {
+      promises.push(
+        monitor.measure(`Transaction-${i}`, async (context) => {
+          await transactionManager.runInTransaction(async (client: PoolClient) => {
             const repository = new TaskRepository(client)
-            await repository.update(taskPending.start())
+            const task = await repository.findByNameAndLock('rewards')
+            if (!task) {
+              return
+            }
+            await repository.update(task.start())
+            // const heapUsed = process.memoryUsage().heapUsed / 1024 / 1024
+            // context.set('memoryUsage', `${heapUsed} mb`)
           })
         })
-      }),
-    ])
+      )
+    }
+
+    await Promise.all(promises)
     const end = performance.eventLoopUtilization(start)
-    console.log(end)
 
     monitor.printCollectedResults()
+    console.log(end)
     monitor.disconnect()
   })
 })
