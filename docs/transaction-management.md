@@ -4,6 +4,17 @@ title: Transaction Management en NodeJS
 date: Agosto 13, 2025
 ---
 
+# Qué vamos a hacer
+
+<div style="float: left; width: 40%;">
+* Introducción a las transacciones en bases de datos relacionales
+* Prueba de concepto de transacciones
+* Introducción a los tipos de bloqueos de registros
+* Prueba de concepto de bloqueos de registros
+</div>
+
+<img src="image/fantasiosa.png" style="float: right; margin-left: 1em; max-width: 60%">
+
 # Concurrencia
 
 ![](image/concurrencia.png)
@@ -23,6 +34,7 @@ __Múltiples tareas compiten por el acceso al mismo recurso__
 * Sistemas de control de stock
 * Sistemas de archivos: journaling
 * IoT: sistemas de iluminación
+* Protocolos de telecomunicaciones
 * __??????__
 </div>
 
@@ -53,11 +65,23 @@ __Múltiples tareas compiten por el acceso al mismo recurso__
 
 <img src="image/locking.png" style="float: right; margin-left: 1em; max-width: 30%">
 
+# Node Event Loop
+
+![](image/event_loop.png)
+
+# Event Loop Starvation
+
+* Eventos CPU-bound
+* __Event queue flooding__
+
+![](image/flooding.png)
+
 # Referencias
 
 * [Database Transactions - Wikipedia](https://en.wikipedia.org/wiki/Database_transaction)
 * [ACID properties - Wikipedia](https://en.wikipedia.org/wiki/ACID)
 * [Postgres Concurrency Control](https://www.postgresql.org/docs/current/mvcc.html)
 * [Java Concurrency In Practice - Brian Goetz et al.](https://libgen.li/ads.php?md5=26544cc9a44791828d3c53cd03c07c35)
+* [Event Loop Starvation](https://medium.com/draftkings-engineering/event-loop-starvation-in-nodejs-a19901e26b41)
 
 ![](image/hasta_luego.png)
